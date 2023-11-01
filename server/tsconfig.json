@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es6", // 中文注释：指定ECMAScript目标版本
+    "module": "commonjs", // 中文注释：指定生成哪个模块系统代码
+    "strict": true, // 中文注释：启用所有严格类型检查
+    "esModuleInterop": true, // 中文注释：允许使用es6的模块语法
+    "allowJs": true, // 中文注释：允许编译js文件
+    "baseUrl": "./", // 中文注释：解析非相对模块名的基准目录
+    "forceConsistentCasingInFileNames": true, // 中文注释：不允许对同一个文件使用不一致的引用
+    "resolveJsonModule": true, // 中文注释：允许使用import导入json模块
+    "outDir": "dist",  // 中文注释：指定输出目录
+    "typeRoots": [
+      "./lib/*.d.ts",
+      "./typings/*.d.ts"
+    ]
+  },
+  "exclude": ["**/node_modules/**", "**/dist/**"],
+  "files": ["./src/main/types.d.ts"]
+}
