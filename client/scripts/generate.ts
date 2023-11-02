@@ -1,7 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { FileSystemTree } from '@webcontainer/api';
+import type { FileSystemTree } from '@webcontainer/api';
 
 const { dirname } = path
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +12,9 @@ export async function buildFileSystemTree(dir: string) {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
+    // Ignore node_modules directory
+    if (file === 'node_modules') continue;
+
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
 
