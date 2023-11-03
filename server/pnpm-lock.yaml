@@ -11,8 +11,8 @@ dependencies:
     specifier: ^2.1.0
     version: 2.1.0
   lodash:
-    specifier: ^4.17.11
-    version: 4.17.11
+    specifier: ^4.17.21
+    version: 4.17.21
   node-fetch:
     specifier: ^2.3.0
     version: 2.3.0
@@ -26,8 +26,8 @@ dependencies:
     specifier: ^3.6.10
     version: 3.6.10
   ws:
-    specifier: ^6.1.3
-    version: 6.1.3
+    specifier: ^6.2.2
+    version: 6.2.2
 
 devDependencies:
   '@babel/types':
@@ -201,7 +201,7 @@ packages:
       convert-source-map: 1.9.0
       debug: 2.6.9
       json5: 0.5.1
-      lodash: 4.17.11
+      lodash: 4.17.21
       minimatch: 3.1.2
       path-is-absolute: 1.0.1
       private: 0.1.8
@@ -219,7 +219,7 @@ packages:
       babel-types: 6.26.0
       detect-indent: 4.0.0
       jsesc: 1.3.0
-      lodash: 4.17.11
+      lodash: 4.17.21
       source-map: 0.5.7
       trim-right: 1.0.1
     dev: false
@@ -246,7 +246,7 @@ packages:
       babel-runtime: 6.26.0
       core-js: 2.6.12
       home-or-tmp: 2.0.0
-      lodash: 4.17.11
+      lodash: 4.17.21
       mkdirp: 0.5.6
       source-map-support: 0.4.18
     transitivePeerDependencies:
@@ -267,7 +267,7 @@ packages:
       babel-traverse: 6.26.0
       babel-types: 6.26.0
       babylon: 6.18.0
-      lodash: 4.17.11
+      lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -283,7 +283,7 @@ packages:
       debug: 2.6.9
       globals: 9.18.0
       invariant: 2.2.4
-      lodash: 4.17.11
+      lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -293,7 +293,7 @@ packages:
     dependencies:
       babel-runtime: 6.26.0
       esutils: 2.0.3
-      lodash: 4.17.11
+      lodash: 4.17.21
       to-fast-properties: 1.0.3
     dev: false
 
@@ -458,8 +458,8 @@ packages:
     hasBin: true
     dev: false
 
-  /lodash@4.17.11:
-    resolution: {integrity: sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==}
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /loose-envify@1.4.0:
@@ -653,8 +653,8 @@ packages:
     hasBin: true
     dev: false
 
-  /ws@6.1.3:
-    resolution: {integrity: sha512-tbSxiT+qJI223AP4iLfQbkbxkwdFcneYinM2+x46Gx2wgvbaOMO36czfdfVUBRTHvzAMRhDd98sA5d/BuWbQdg==}
+  /ws@6.2.2:
+    resolution: {integrity: sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==}
     peerDependencies:
       bufferutil: ^4.0.1
       utf-8-validate: ^5.0.2

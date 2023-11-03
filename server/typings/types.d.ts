@@ -1,4 +1,4 @@
-declare type Events = {
+interface Events  {
     type: string;
     payload: any;
 }

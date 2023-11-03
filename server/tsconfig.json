@@ -14,6 +14,5 @@
       "./typings/*.d.ts"
     ]
   },
-  "exclude": ["**/node_modules/**", "**/dist/**"],
-  "files": ["./src/main/types.d.ts"]
+  "exclude": ["**/node_modules/**", "**/dist/**"], // 中文注释：指定要排除的文件
 }
