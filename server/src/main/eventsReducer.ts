@@ -90,7 +90,9 @@ export function reduceEvents (events: Events[]): Events[] {
     name,
   }));
 
-  console.log({ resolvedPromiseIds, promisesWithInvokedCallbacksInfo, parentsIdsOfPromisesWithInvokedCallbacks });
+  console.log("resolvedPromiseIds:", resolvedPromiseIds);
+  console.log("promisesWithInvokedCallbacksInfo:", promisesWithInvokedCallbacksInfo);
+  console.log("parentsIdsOfPromisesWithInvokedCallbacks:", parentsIdsOfPromisesWithInvokedCallbacks);
 
   return events.reduce(eventsReducer, {
     events: [],

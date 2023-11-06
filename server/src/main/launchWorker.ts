@@ -8,7 +8,7 @@ const Messages = {
   Done: (exitCode: number) => action('Done', { exitCode }),
 }
 
-export function launchWorker (jsSourceCode: string, onEvent: (message: any) => void)  {
+export function launchWorker (jsSourceCode: string, onEvent: (message: string) => void)  {
   const worker = new Worker(WORKER_FILE, { workerData: jsSourceCode });
 
   worker.on('message', (message) => {
