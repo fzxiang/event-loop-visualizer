@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/fzxiang/event-loop-visualizer.git"
   },
-  "author": "",
+  "author": "fzxiang <https://github.com/fzxiang>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fzxiang/event-loop-visualizer/issues"
