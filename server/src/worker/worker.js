@@ -69,7 +69,7 @@ const init = (asyncId, type, triggerAsyncId, resource) => {
 const before = (asyncId) => {
   const resource = asyncIdToResource[asyncId] || {};
   const resourceName = (resource.constructor).name;
-  if (resourceName === 'PromiseWrap') {
+  if (resourceName === 'Promise') {
     postEvent(EVENTS.BeforePromise(asyncId));
   }
   if (resourceName === 'Timeout') {
@@ -80,7 +80,7 @@ const before = (asyncId) => {
 const after = (asyncId) => {
   const resource = asyncIdToResource[asyncId] || {};
   const resourceName = (resource.constructor).name;
-  if (resourceName === 'PromiseWrap') {
+  if (resourceName === 'Promise') {
     postEvent(EVENTS.AfterPromise(asyncId));
   }
 }
