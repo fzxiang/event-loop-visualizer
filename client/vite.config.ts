@@ -6,8 +6,8 @@ import progress from 'vite-plugin-progress'
 export default defineConfig({
   plugins: [
     progress({
-      renderThrottle: 16
+      renderThrottle: 16,
     }),
-    react()
+    react(),
   ],
-});
+})
