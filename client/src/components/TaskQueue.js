@@ -1,4 +1,4 @@
-/* @flow */
+
 import React from 'react';
 import posed, { PoseGroup } from 'react-pose'
 import Measure from 'react-measure';

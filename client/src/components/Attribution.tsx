@@ -1,9 +1,18 @@
-import { withStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 
-function Attribution({ classes }: { classes: any }) {
+const useStyles = makeStyles()(theme => (
+  {
+    root: {
+      marginBottom: theme.spacing(1),
+    },
+  }
+))
+
+function Attribution() {
+  const { classes } = useStyles()
   return (
     <Typography
       variant="body1"
@@ -20,30 +29,22 @@ function Attribution({ classes }: { classes: any }) {
         target="_blank"
         rel="noreferrer"
       >
-        Andrew Dillon
+        Alson(fzxiang)
       </Link>
       . Inspired by
       {' '}
       <Link
         variant="body1"
         color="secondary"
-        href="http://latentflip.com/loupe/"
+        href="https://github.com/Hopding/"
         target="_blank"
         rel="noreferrer"
       >
-        Loupe
+        Andrew Dillon
       </Link>
       .
     </Typography>
   )
 }
 
-function styles(theme: any) {
-  return {
-    root: {
-      marginBottom: theme?.spacing?.unit,
-    },
-  }
-}
-
-export default withStyles(styles)(Attribution)
+export default Attribution
