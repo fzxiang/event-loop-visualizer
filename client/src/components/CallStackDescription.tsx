@@ -9,8 +9,9 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { makeStyles } from 'tss-react/mui'
 
-function styles(theme) {
+const useStyles = makeStyles()(() => {
   return {
     actions: {
       display: 'flex',
@@ -21,17 +22,16 @@ function styles(theme) {
       marginLeft: 15,
     },
   }
-}
+})
 
-function CallStackDescription({
-  classes,
+export default function CallStackDescription({
   open,
   onClose,
 }: {
-  classes: any
   open: boolean
   onClose: () => void
 }) {
+  const { classes } = useStyles()
   return (
     <Dialog
       open={open}
@@ -106,5 +106,3 @@ function CallStackDescription({
     </Dialog>
   )
 }
-
-export default withStyles(styles)(CallStackDescription)

@@ -1,7 +1,5 @@
-import React from 'react'
 import AceEditor from 'react-ace'
 
-import { withStyles } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
 
 import 'brace'
@@ -9,25 +7,23 @@ import 'brace/mode/javascript'
 import 'brace/theme/solarized_light'
 
 import '../styles/colors.css'
+import { makeStyles } from 'tss-react/mui'
 import { getPastelIndexFor } from '../styles/colors'
 
-function styles(theme) {
-  return {
-    root: {
-      ...theme.mixins.gutters(),
-      paddingTop: theme.spacing.unit * 1,
-      paddingBottom: theme.spacing.unit * 1,
-      margin: theme.spacing.unit,
-      // backgroundColor: '#fbf1d3',
-      // backgroundColor: '#ffffff',
-      backgroundColor: theme.palette.primary.main,
-      height: '100%',
-      display: 'flex',
-    },
-  }
-}
+const useStyles = makeStyles()(theme => ({
+  root: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+    height: '100%',
+    display: 'flex',
+  },
+}))
 
-function convertCodeIndexToRowCol(code, index) {
+function convertCodeIndexToRowCol(code: string, index: number): { row: number; col: number } {
   let col = 0
   let row = 0
   let head = 0
@@ -52,19 +48,18 @@ function convertCodeIndexToRowCol(code, index) {
   return { row, col }
 }
 
-function CodeEditor({
-  classes,
+export default function CodeEditor({
   code = '',
   markers = [],
   onChangeCode,
   locked = false,
 }: {
-  classes: any
   code: string
   markers?: { start: number; end: number }[]
   onChangeCode: (code: string) => any
   locked: boolean
 }) {
+  const { classes } = useStyles()
   return (
     <Paper className={classes.root} elevation={1}>
       <AceEditor
@@ -83,23 +78,25 @@ function CodeEditor({
         fontSize={14}
         tabSize={2}
         markers={
-        markers.map(({ start, end }, idx) => ({
-          startRow: convertCodeIndexToRowCol(code, start).row,
-          startCol: convertCodeIndexToRowCol(code, start).col,
-          endRow: convertCodeIndexToRowCol(code, end).row,
-          endCol: convertCodeIndexToRowCol(code, end).col,
-          className: `active-function-marker${getPastelIndexFor(idx)}`,
-          type: 'text',
-        }))
-      }
+          markers.map(({ start, end }, idx) => {
+            return ({
+              startRow: convertCodeIndexToRowCol(code, start).row,
+              startCol: convertCodeIndexToRowCol(code, start).col,
+              endRow: convertCodeIndexToRowCol(code, end).row,
+              endCol: convertCodeIndexToRowCol(code, end).col,
+              className: `active-function-marker${getPastelIndexFor(idx)}`,
+              type: 'text',
+            })
+          })
+        }
         showGutter
         highlightActiveLine={!locked}
-        showLineNumbers
+        setOptions={{
+          showLineNumbers: true,
+        }}
         editorProps={{ $blockScrolling: Number.POSITIVE_INFINITY }}
         focus
       />
     </Paper>
   )
 }
-
-export default withStyles(styles)(CodeEditor)
