@@ -1,7 +1,7 @@
 export default [
-{
-  name: 'Promise.all() vs Promise.race()',
-  value: `
+  {
+    name: 'Promise.all() vs Promise.race()',
+    value: `
 const GOOGLE = 'https://www.google.com';
 const NEWS = 'https://www.news.google.com';
 
@@ -23,10 +23,10 @@ Promise.all([
 //   fetch(GOOGLE).then(function c() {}),
 // ]).then(function after() {});
 `.trim(),
-},
-{
-  name: 'Promises and Errors',
-  value: `
+  },
+  {
+    name: 'Promises and Errors',
+    value: `
 Promise.resolve()
   .then(function a() {
     Promise.resolve().then(function d() {})
@@ -37,10 +37,10 @@ Promise.resolve()
   .catch(function b() {})
   .then(function c() {})
 `.trim(),
-},
-{
-  name: 'Nested Promise Chain',
-  value: `
+  },
+  {
+    name: 'Nested Promise Chain',
+    value: `
 Promise.resolve()
   .then(function a() {
     Promise.resolve().then(function c() {});
@@ -49,10 +49,10 @@ Promise.resolve()
     Promise.resolve().then(function d() {});
   });
 `.trim(),
-},
-{
-  name: 'Wrapping setTimeout in Promise',
-  value: `
+  },
+  {
+    name: 'Wrapping setTimeout in Promise',
+    value: `
 const pause = (millis) =>
   new Promise(resolve => setTimeout(resolve, millis));
 
@@ -65,5 +65,5 @@ pause(1000).then(() => {
   console.log('End:', secs);
 });
 `.trim(),
-},
-];
+  },
+]

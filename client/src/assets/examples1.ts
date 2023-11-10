@@ -1,7 +1,7 @@
 export default [
-{
-  name: 'Call Stack',
-  value:`
+  {
+    name: 'Call Stack',
+    value: `
 function tenth() { }
 
 function ninth() { tenth() }
@@ -24,10 +24,10 @@ function first() { second() }
 
 first();
 `.trim(),
-},
-{
-  name: 'Task Queue',
-  value: `
+  },
+  {
+    name: 'Task Queue',
+    value: `
 setTimeout(function a() {}, 1000);
 
 setTimeout(function b() {}, 500);
@@ -38,10 +38,10 @@ function d() {}
 
 d();
 `.trim(),
-},
-{
-  name: 'Microtask Queue',
-  value: `
+  },
+  {
+    name: 'Microtask Queue',
+    value: `
 fetch('https://www.google.com')
   .then(function a() {});
 
@@ -51,13 +51,13 @@ Promise.resolve()
 Promise.reject()
   .catch(function c() {});
 `.trim(),
-},
-{
-  name: 'Tasks vs Microtasks',
-  value: `
+  },
+  {
+    name: 'Tasks vs Microtasks',
+    value: `
 setTimeout(function a() {}, 0);
 
 Promise.resolve().then(function b() {});
 `.trim(),
-},
-];
+  },
+]

@@ -1,21 +1,20 @@
-import { blueGrey } from '@mui/material/colors';
+import { blueGrey } from '@mui/material/colors'
 
-import Attribution from './components/Attribution';
-import Header from './components/Header';
-import RunOrEditButton from './components/RunOrEditButton';
-import ShareButton from './components/ShareButton';
-import ExampleSelector from './components/ExampleSelector';
-import CodeEditor from './components/CodeEditor';
-import CallStack from './components/CallStack';
-import TaskQueue from './components/TaskQueue';
-import ExecutionModelStepper from './components/ExecutionModelStepper';
-import FabControls from './components/FabControls';
-import Drawer from './components/Drawer';
-import CallStackDescription from './components/CallStackDescription';
-import EventLoopDescription from './components/EventLoopDescription';
-import TaskQueueDescription from './components/TaskQueueDescription';
-import MicrotaskQueueDescription from './components/MicrotaskQueueDescription';
-
+import Attribution from './components/Attribution'
+import Header from './components/Header'
+import RunOrEditButton from './components/RunOrEditButton'
+import ShareButton from './components/ShareButton'
+import ExampleSelector from './components/ExampleSelector'
+import CodeEditor from './components/CodeEditor'
+import CallStack from './components/CallStack'
+import TaskQueue from './components/TaskQueue'
+import ExecutionModelStepper from './components/ExecutionModelStepper'
+import FabControls from './components/FabControls'
+import Drawer from './components/Drawer'
+import CallStackDescription from './components/CallStackDescription'
+import EventLoopDescription from './components/EventLoopDescription'
+import TaskQueueDescription from './components/TaskQueueDescription'
+import MicrotaskQueueDescription from './components/MicrotaskQueueDescription'
 
 const styles = {
   container: {
@@ -23,74 +22,73 @@ const styles = {
     width: '100vw',
     height: '100vh',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     overflow: 'hidden',
   },
   leftContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
   },
   rightContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as const,
     flex: 1,
   },
   codeControlsContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     alignItems: 'center',
   },
   bottomRightContainer: {
     display: 'flex',
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row' as const,
     overflow: 'hidden',
   },
-};
-interface AppRootProps {
-  mode: 'editing' | 'running' | 'visualizing';
-  example: string,
-  code: string,
-  tasks: { id: string, name: string }[],
-  microtasks: { name: string }[],
-  frames: { name: string }[],
-  markers: { start: number, end: number }[],
-  visiblePanels: {
-    taskQueue: boolean,
-    microtaskQueue: boolean,
-    callStack: boolean,
-    eventLoop: boolean,
-  },
-  isAutoPlaying: boolean,
-  isDrawerOpen: boolean,
-  showCallStackDescription: boolean,
-  showEventLoopDescription: boolean,
-  showTaskQueueDescription: boolean,
-  showMicrotaskQueueDescription: boolean,
-  hasReachedEnd: boolean,
-  currentStep: 'evaluateScript' | 'runTasks' | 'runMicrotasks' | 'rerender',
-  onChangeVisiblePanel: string => void => any,
-  onCloseDrawer: void => any,
-  onOpenDrawer: void => any,
-  onChangeExample: ({ target: { value: string } }) => any,
-  onChangeCode: string => any,
-  onClickRun: void => any,
-  onClickEdit: void => any,
-  onClickPauseAutoStep: void => any,
-  onClickAutoStep: void => any,
-  onClickStepBack: void => any,
-  onClickStep: void => any,
-  onShowCallStackDescription: void => any,
-  onHideCallStackDescription: void => any,
-  onShowEventLoopDescription: void => any,
-  onHideEventLoopDescription: void => any,
-  onShowTaskQueueDescription: void => any,
-  onHideTaskQueueDescription: void => any,
-  onShowMicrotaskQueueDescription: void => any,
-  onHideMicrotaskQueueDescription: void => any,
 }
-const AppRoot = ({
-  classes,
+interface AppRootProps {
+  mode: 'editing' | 'running' | 'visualizing'
+  example: string
+  code: string
+  tasks: { id: string; name: string }[]
+  microtasks: { name: string; id: string }[]
+  frames: { name: string; id: string }[]
+  markers: { start: number; end: number }[]
+  visiblePanels: {
+    taskQueue: boolean
+    microtaskQueue: boolean
+    callStack: boolean
+    eventLoop: boolean
+  }
+  isAutoPlaying: boolean
+  isDrawerOpen: boolean
+  showCallStackDescription: boolean
+  showEventLoopDescription: boolean
+  showTaskQueueDescription: boolean
+  showMicrotaskQueueDescription: boolean
+  hasReachedEnd: boolean
+  currentStep: 'evaluateScript' | 'runTasks' | 'runMicrotasks' | 'rerender' | 'none'
+  onChangeVisiblePanel: (key: string) => () => void
+  onCloseDrawer: () => void
+  onOpenDrawer: () => void
+  onChangeExample: (arg: { target: { value: string } }) => any
+  onChangeCode: (key: string) => any
+  onClickRun: () => void
+  onClickEdit: () => void
+  onClickPauseAutoStep: () => void
+  onClickAutoStep: () => void
+  onClickStep: () => void
+  onShowCallStackDescription: () => void
+  onHideCallStackDescription: () => void
+  onShowEventLoopDescription: () => void
+  onHideEventLoopDescription: () => void
+  onShowTaskQueueDescription: () => void
+  onHideTaskQueueDescription: () => void
+  onShowMicrotaskQueueDescription: () => void
+  onHideMicrotaskQueueDescription: () => void
+}
+
+export default function AppRoot({
   mode,
   example,
   code,
@@ -116,7 +114,6 @@ const AppRoot = ({
   onClickEdit,
   onClickPauseAutoStep,
   onClickAutoStep,
-  onClickStepBack,
   onClickStep,
   onShowCallStackDescription,
   onHideCallStackDescription,
@@ -126,8 +123,9 @@ const AppRoot = ({
   onHideTaskQueueDescription,
   onShowMicrotaskQueueDescription,
   onHideMicrotaskQueueDescription,
-}: AppRootProps) => (
-  <div style={styles.container}>
+}: AppRootProps) {
+  return (
+    <div style={styles.container}>
       <Drawer
         open={isDrawerOpen}
         visiblePanels={visiblePanels}
@@ -199,7 +197,6 @@ const AppRoot = ({
         hasReachedEnd={hasReachedEnd}
         onClickPauseAutoStep={onClickPauseAutoStep}
         onClickAutoStep={onClickAutoStep}
-        onClickStepBack={onClickStepBack}
         onClickStep={onClickStep}
       />
 
@@ -222,7 +219,6 @@ const AppRoot = ({
         open={showMicrotaskQueueDescription}
         onClose={onHideMicrotaskQueueDescription}
       />
-  </div>
-);
-
-export default AppRoot;
+    </div>
+  )
+}

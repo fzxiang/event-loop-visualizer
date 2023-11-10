@@ -15,4 +15,4 @@ logD();
 //   editing this code and see what happens. You
 //   can also try playing with some of the examples 
 //   from the dropdown!
-`.trim();
+`.trim()

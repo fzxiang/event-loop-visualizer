@@ -1,5 +1,5 @@
 import { makeStyles } from 'tss-react/mui'
-
+import type { ReactNode } from 'react'
 import type { ButtonOwnProps } from '@mui/material'
 import { Button } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -12,13 +12,12 @@ const blueTheme = createTheme({
   palette: { primary: blue },
 })
 
-interface ButtonProps {
-  color: ButtonOwnProps['color']
-  size: ButtonOwnProps['size']
+type ButtonProps = {
   onClick: () => void
   className: string
-  children: React.ReactNode
-}
+  children: ReactNode
+} & ButtonOwnProps
+
 function BlueButton(props: ButtonProps) {
   return (
     <ThemeProvider theme={blueTheme}>

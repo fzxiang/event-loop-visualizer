@@ -16,7 +16,6 @@ import '../styles/index.css'
 import CardHeaderWithAbout from './CardHeaderWithAbout'
 
 interface Props {
-  classes: any
   frames: { id: string; name: string }[]
   onClickAbout: () => void
 }

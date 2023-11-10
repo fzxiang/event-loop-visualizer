@@ -40,7 +40,6 @@ export default function EventLoopDescription({
   open,
   onClose,
 }: {
-  classes: any
   open: boolean
   onClose: () => void
 }) {

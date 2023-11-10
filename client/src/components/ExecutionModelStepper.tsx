@@ -50,7 +50,7 @@ const stepDescriptions = [
 const idxForStep = {
   none: -1,
   evaluateScript: 0,
-  runTask: 1,
+  runTasks: 1,
   runMicrotasks: 2,
   rerender: 3,
 }
@@ -59,7 +59,7 @@ export default function ExecutionModelStepper({
   step,
   onClickAbout,
 }: {
-  step: 'none' | 'evaluateScript' | 'runTask' | 'runMicrotasks' | 'rerender'
+  step: 'evaluateScript' | 'runTasks' | 'runMicrotasks' | 'rerender' | 'none'
   onClickAbout: () => void
 }) {
   const { classes } = useStyles()

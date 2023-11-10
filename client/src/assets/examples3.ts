@@ -1,7 +1,7 @@
 export default [
-{
-  name: 'Naive Primes',
-  value: `
+  {
+    name: 'Naive Primes',
+    value: `
 function isPrime(n) {
   for (let i = 2; i < n; i++) {
     if (n % i === 0) return false;
@@ -20,10 +20,10 @@ computePrimes(prime => {
   console.log(prime);
 });
 `.trim(),
-},
-{
-  name: 'Primes with Tasks',
-  value: `
+  },
+  {
+    name: 'Primes with Tasks',
+    value: `
 function isPrime(n) {
   for (let i = 2; i < n; i++) {
     if (n % i === 0) return false;
@@ -45,10 +45,10 @@ computePrimes(prime => {
   console.log(prime);
 });
 `.trim(),
-},
-{
-  name: 'Primes with Microtasks',
-  value: `
+  },
+  {
+    name: 'Primes with Microtasks',
+    value: `
 function isPrime(n) {
   for (let i = 2; i < n; i++) {
     if (n % i === 0) return false;
@@ -70,5 +70,5 @@ computePrimes(prime => {
   console.log(prime);
 });
 `.trim(),
-},
-];
+  },
+]
