@@ -28,11 +28,13 @@ const MicrotaskQueueDescription = ({
   classes,
   open,
   onClose,
-}: {|
+}: {
   classes: any,
   open: boolean,
   onClose: void => any,
-|}) => (
+}) => {
+  const { classes } = useStyles()
+  return (
   <Dialog
     open={open}
     onClose={onClose}
@@ -100,6 +102,6 @@ const MicrotaskQueueDescription = ({
       </Button>
     </DialogActions>
   </Dialog>
-);
+)};
 
 export default withStyles(styles)(MicrotaskQueueDescription);

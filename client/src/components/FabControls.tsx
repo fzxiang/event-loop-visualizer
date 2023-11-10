@@ -4,30 +4,28 @@ import Fab from '@mui/material/Fab'
 import Tooltip from '@mui/material/Tooltip'
 import Zoom from '@mui/material/Zoom'
 
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
-import FastForwardIcon from '@material-ui/icons/FastForward'
-import PauseIcon from '@material-ui/icons/Pause'
+import type { FabOwnProps } from '@mui/material'
 
-import MuiThemeProvider from '@mui/material/styles/MuiThemeProvider'
 import green from '@mui/material/colors/green'
 import blue from '@mui/material/colors/blue'
 import yellow from '@mui/material/colors/yellow'
 import { makeStyles } from 'tss-react/mui'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 
-
-function createTheme(primary) {
-  return createMuiTheme({
-    palette: { primary },
-    typography: { useNextVariants: true },
-  })
-}
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import FastForwardIcon from '@mui/icons-material/FastForward'
+import PauseIcon from '@mui/icons-material/Pause'
 
 const greenTheme = createTheme({
   palette: { primary: green },
 })
 
-function GreenFab(props) {
+type FabProps = {
+  onClick: () => void
+  className?: string
+  children: React.ReactNode
+} & FabOwnProps
+function GreenFab(props: FabProps) {
   return (
     <ThemeProvider theme={greenTheme}>
       <Fab {...props} />
@@ -39,7 +37,7 @@ const blueTheme = createTheme({
   palette: { primary: blue },
 })
 
-function BlueFab(props) {
+function BlueFab(props: FabProps) {
   return (
     <ThemeProvider theme={blueTheme}>
       <Fab {...props} />
@@ -47,9 +45,11 @@ function BlueFab(props) {
   )
 }
 
-const yellowTheme = createTheme(yellow)
+const yellowTheme = createTheme({
+  palette: { primary: yellow },
+})
 
-function YellowFab(props) {
+function YellowFab(props: FabProps) {
   return (
     <ThemeProvider theme={yellowTheme}>
       <Fab {...props} />
@@ -57,33 +57,31 @@ function YellowFab(props) {
   )
 }
 
-const useStyles = makeStyles()(() => ({
+const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    position: 'absolute',
+    flexDirection: 'column' as const,
+    alignItems: 'flex-end' as const,
+    position: 'absolute' as const,
     bottom: 20,
     right: 20,
     overflow: 'hidden',
   },
-}))
-
-function themedStyles(theme) {
-  return {
-    fab: {
-      margin: theme.spacing.unit,
-      color: 'white',
-    },
-    yellowFab: {
-      margin: theme.spacing.unit,
-      color: 'black',
-    },
-    extendedIcon: {
-      marginRight: theme.spacing.unit,
-    },
-  }
 }
+
+const useStyles = makeStyles()(theme => ({
+  fab: {
+    margin: theme.spacing(1),
+    color: 'white',
+  },
+  yellowFab: {
+    margin: theme.spacing(1),
+    color: 'black',
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}))
 
 export default function FabControls({
   visible,
@@ -148,7 +146,7 @@ export default function FabControls({
           </div>
         </Tooltip>
       )}
-     
+
       <Zoom style={{ transitionDelay: '0ms' }} in={visible}>
         <GreenFab
           color="primary"

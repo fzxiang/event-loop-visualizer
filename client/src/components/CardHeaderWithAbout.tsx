@@ -12,13 +12,12 @@ const blueTheme = createTheme({
   palette: { primary: blue },
 })
 
-interface ButtonProps {
-  color: ButtonOwnProps['color']
-  size: ButtonOwnProps['size']
+type ButtonProps = {
   onClick: () => void
   className: string
   children: React.ReactNode
-}
+} & ButtonOwnProps
+
 function BlueButton(props: ButtonProps) {
   return (
     <ThemeProvider theme={blueTheme}>

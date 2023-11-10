@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import TextField from '@mui/material/TextField'
 
-import LinkIcon from '@material-ui/icons/Link';
+import LinkIcon from '@mui/icons-material/Link';
 
 import MuiThemeProvider from '@mui/material/styles/MuiThemeProvider';
 import { createMuiTheme } from '@mui/material/styles';
