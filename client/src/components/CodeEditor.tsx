@@ -66,8 +66,6 @@ export default function CodeEditor({
         style={{
           maxWidth: 500,
           height: '100%',
-          marginLeft: -15,
-          marginRight: -15,
         }}
         readOnly={locked}
         value={code}

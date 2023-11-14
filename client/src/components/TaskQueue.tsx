@@ -19,7 +19,8 @@ const useStyles = makeStyles()((theme) => {
       maxHeight: 140,
       margin: theme.spacing(1),
       height: 120,
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.secondary.contrastText,
       display: 'flex',
     },
     content: {
@@ -32,7 +33,6 @@ const useStyles = makeStyles()((theme) => {
       paddingBottom: theme.spacing(1),
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
-      margin: theme.spacing(1),
       display: 'inline-block',
       textAlign: 'center',
       minWidth: 125,
@@ -49,6 +49,7 @@ interface Props {
 const variants = {
   enter: { x: 0, opacity: 1 },
   exit: { x: -200, opacity: 0 },
+  init: { x: 1200, opacity: 0 },
 }
 
 export default function TaskQueue({ tasks, title, onClickAbout }: Props) {
@@ -80,7 +81,6 @@ export default function TaskQueue({ tasks, title, onClickAbout }: Props) {
               display: 'flex',
               flexWrap: 'nowrap',
               flexDirection: 'row',
-              paddingBottom: 20,
             }}
             className="scroll-on-hover-x"
           >
@@ -89,7 +89,7 @@ export default function TaskQueue({ tasks, title, onClickAbout }: Props) {
                 return (
                   <motion.div
                     key={item.id}
-                    initial="exit"
+                    initial="init"
                     animate="enter"
                     exit="exit"
                     variants={variants}
@@ -100,7 +100,6 @@ export default function TaskQueue({ tasks, title, onClickAbout }: Props) {
                         {item.name}
                       </Typography>
                     </Paper>
-                    {item.name}
                   </motion.div>
                 )
               })}

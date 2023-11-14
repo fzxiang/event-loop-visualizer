@@ -1,5 +1,5 @@
-import React from 'react'
-
+import type { ReactNode } from 'react'
+import { forwardRef } from 'react'
 import Fab from '@mui/material/Fab'
 import Tooltip from '@mui/material/Tooltip'
 import Zoom from '@mui/material/Zoom'
@@ -17,45 +17,48 @@ import FastForwardIcon from '@mui/icons-material/FastForward'
 import PauseIcon from '@mui/icons-material/Pause'
 
 const greenTheme = createTheme({
-  palette: { primary: green },
+  palette: { primary: {
+    main: green[500],
+  } },
 })
 
 type FabProps = {
   onClick: () => void
   className?: string
-  children: React.ReactNode
+  children: ReactNode
 } & FabOwnProps
-function GreenFab(props: FabProps) {
+
+const GreenFab = forwardRef<HTMLButtonElement, FabProps>((props, ref) => {
   return (
     <ThemeProvider theme={greenTheme}>
-      <Fab {...props} />
+      <Fab {...props} ref={ref} />
     </ThemeProvider>
   )
-}
+})
 
 const blueTheme = createTheme({
-  palette: { primary: blue },
+  palette: { primary: { main: blue[500] } },
 })
 
-function BlueFab(props: FabProps) {
+const BlueFab = forwardRef<HTMLButtonElement, FabProps>((props, ref) => {
   return (
     <ThemeProvider theme={blueTheme}>
-      <Fab {...props} />
+      <Fab {...props} ref={ref} />
     </ThemeProvider>
   )
-}
-
-const yellowTheme = createTheme({
-  palette: { primary: yellow },
 })
 
-function YellowFab(props: FabProps) {
+const yellowTheme = createTheme({
+  palette: { primary: { main: yellow[500] } },
+})
+
+const YellowFab = forwardRef<HTMLButtonElement, FabProps>((props, ref) => {
   return (
     <ThemeProvider theme={yellowTheme}>
-      <Fab {...props} />
+      <Fab {...props} ref={ref} />
     </ThemeProvider>
   )
-}
+})
 
 const styles = {
   container: {

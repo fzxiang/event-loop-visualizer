@@ -14,7 +14,7 @@ import yellow from '@mui/material/colors/yellow'
 import { makeStyles } from 'tss-react/mui'
 
 const greenTheme = createTheme({
-  palette: { primary: green },
+  palette: { primary: { main: green[500] } },
 })
 type ButtonProps = {
   onClick: () => void
@@ -31,7 +31,7 @@ function GreenButton(props: ButtonProps) {
 }
 
 const blueTheme = createTheme({
-  palette: { primary: blue },
+  palette: { primary: { main: blue[500] } },
 })
 
 function BlueButton(props: ButtonProps) {

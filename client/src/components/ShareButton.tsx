@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import type { ReactNode, Ref } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
@@ -14,7 +14,7 @@ import pink from '@mui/material/colors/pink'
 import { makeStyles } from 'tss-react/mui'
 
 const pinkTheme = createTheme({
-  palette: { primary: pink },
+  palette: { primary: { main: pink[500] } },
 })
 
 type ButtonProps = {
@@ -24,13 +24,13 @@ type ButtonProps = {
   ref: any
 } & ButtonOwnProps
 
-function PinkButton(props: ButtonProps) {
+const PinkButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   return (
     <ThemeProvider theme={pinkTheme}>
-      <Button {...props} />
+      <Button {...props} ref={ref} />
     </ThemeProvider>
   )
-}
+})
 
 const useStyles = makeStyles()(theme => ({
   button: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles()(theme => ({
 
 export default function ShareButton({ code }: { code: string }) {
   const { classes } = useStyles()
-  const buttonRef = useRef<HTMLInputElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
   const anchor = buttonRef && buttonRef.current

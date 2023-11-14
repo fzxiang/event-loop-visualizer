@@ -28,22 +28,18 @@ const variants = {
 const useStyles = makeStyles()(theme => ({
   card: {
     margin: theme.spacing(1),
-    maxWidth: 230,
-    minWidth: 230,
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    borderWidth: theme.spacing(1),
+    borderStyle: 'solid',
   },
   content: {
-    width: 200,
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
   },
   frame: {
-    width: 165,
-    height: 30,
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     paddingLeft: theme.spacing(1),

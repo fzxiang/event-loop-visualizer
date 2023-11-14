@@ -9,7 +9,7 @@ import blue from '@mui/material/colors/blue'
 import CardHeader from '@mui/material/CardHeader'
 
 const blueTheme = createTheme({
-  palette: { primary: blue },
+  palette: { primary: { main: blue[500] } },
 })
 
 type ButtonProps = {

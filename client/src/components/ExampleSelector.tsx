@@ -37,7 +37,7 @@ export default function ExampleSelector({
   const { classes } = useStyles()
   return (
     <form className={classes.form} autoComplete="off">
-      <FormControl className={classes.formControl}>
+      <FormControl className={classes.formControl} variant="standard">
         <Select
           value={example}
           onChange={onChangeExample}

@@ -15,7 +15,7 @@ import { makeStyles } from 'tss-react/mui'
 import CardHeaderWithAbout from './CardHeaderWithAbout'
 
 const blueTheme = createTheme({
-  palette: { primary: blue },
+  palette: { primary: { main: blue[500] } },
 })
 
 const useStyles = makeStyles()(theme => ({
@@ -23,9 +23,10 @@ const useStyles = makeStyles()(theme => ({
     margin: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    borderWidth: theme.spacing(1),
+    borderStyle: 'solid',
     flex: 1,
-    maxWidth: 300,
     overflowY: 'auto',
   },
   stepper: {
