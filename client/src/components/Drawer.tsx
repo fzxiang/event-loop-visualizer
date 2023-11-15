@@ -30,7 +30,7 @@ export default function Drawer({
     callStack: boolean
     eventLoop: boolean
   }
-  onChange: (arg: string) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => any
+  onChange: (arg: keyof State['visiblePanels']) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => any
   onClose: () => void
 }) {
   const { classes } = useStyles()

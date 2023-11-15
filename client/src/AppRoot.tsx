@@ -46,48 +46,6 @@ const styles = {
     overflow: 'hidden',
   },
 }
-interface AppRootProps {
-  mode: 'editing' | 'running' | 'visualizing'
-  example: string
-  code: string
-  tasks: { id: string; name: string }[]
-  microtasks: { name: string; id: string }[]
-  frames: { name: string; id: string }[]
-  markers: { start: number; end: number }[]
-  visiblePanels: {
-    taskQueue: boolean
-    microtaskQueue: boolean
-    callStack: boolean
-    eventLoop: boolean
-  }
-  isAutoPlaying: boolean
-  isDrawerOpen: boolean
-  showCallStackDescription: boolean
-  showEventLoopDescription: boolean
-  showTaskQueueDescription: boolean
-  showMicrotaskQueueDescription: boolean
-  hasReachedEnd: boolean
-  currentStep: 'evaluateScript' | 'runTasks' | 'runMicrotasks' | 'rerender' | 'none'
-  onChangeVisiblePanel: (key: string) => () => void
-  onCloseDrawer: () => void
-  onOpenDrawer: () => void
-  onChangeExample: (arg: { target: { value: string } }) => any
-  onChangeCode: (key: string) => any
-  onClickRun: () => void
-  onClickEdit: () => void
-  onClickPauseAutoStep: () => void
-  onClickAutoStep: () => void
-  onClickStep: () => void
-  onShowCallStackDescription: () => void
-  onHideCallStackDescription: () => void
-  onShowEventLoopDescription: () => void
-  onHideEventLoopDescription: () => void
-  onShowTaskQueueDescription: () => void
-  onHideTaskQueueDescription: () => void
-  onShowMicrotaskQueueDescription: () => void
-  onHideMicrotaskQueueDescription: () => void
-}
-
 export default function AppRoot({
   mode,
   example,
