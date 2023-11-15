@@ -33,6 +33,7 @@ const useStyles = makeStyles()(theme => ({
     borderColor: theme.palette.primary.main,
     borderWidth: theme.spacing(1),
     borderStyle: 'solid',
+    minWidth: 300,
   },
   content: {
     flex: 1,
