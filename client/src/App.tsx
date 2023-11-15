@@ -1,15 +1,10 @@
-import React, { Component } from 'react'
+import { useEffect, useState } from 'react'
+
 import { v4 as uuid } from 'uuid'
-
-// NOTE: We're using a copied version of `notistack` for now, since the version
-//       that is currently published to NPM doesn't provide the `closeSnackbar`
-//       prop (which we need).
-
-// 注释： 我们正在使用 `notistack` 的复制版本，因为发布到 NPM 的当前版本不提供 `closeSnackbar` 属性（我们需要这个属性）
 
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
-import { SnackbarProvider, withSnackbar } from 'notistack'
+import { SnackbarProvider, useSnackbar } from 'notistack'
 
 import AppRoot from './AppRoot'
 import { fetchEventsForCode } from './utils/events'
@@ -35,11 +30,10 @@ function isPlayableEvent({ type }: { type: string }) {
 
 const PRETTY_MUCH_INFINITY = 9999999999
 
-class App extends Component {
-  state = {
-    // tasks: _.range(15).map(id => ({ id, name: 'setTimeout' })),
-    // microtasks: _.range(15).map(id => ({ id, name: 'resolve' })),
-    // frames: _.range(20).map(id => ({ id, name: 'foo()' })),
+function App() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  // State
+  const [state, setState] = useState<State>({
     tasks: [],
     microtasks: [],
     frames: [],
@@ -60,74 +54,76 @@ class App extends Component {
     showEventLoopDescription: false,
     showTaskQueueDescription: false,
     showMicrotaskQueueDescription: false,
-  }
+  })
 
-  currEventIdx: number = 0
-  events: { type: string; payload: any }[] = []
-  snackbarIds: string[] = []
+  let currEventIdx: number = 0
+  let events: { type: string; payload: any }[] = []
+  const snackbarIds: string[] = []
 
-  componentDidMount() {
+  useEffect(() => {
     const search = new URLSearchParams(window.location.search)
     const code = atob(search.get('code') || '') || localStorage.getItem('code') || DEFAULT_CODE
-    this.setState({ code })
-  }
+    setState(prevState => ({ ...prevState, code }))
+  }, [])
 
-  handleOpenDrawer = () => this.setState({ isDrawerOpen: true })
-  handleCloseDrawer = () => this.setState({ isDrawerOpen: false })
+  const handleOpenDrawer = () => setState(prevState => ({ ...prevState, isDrawerOpen: true }))
+  const handleCloseDrawer = () => setState(prevState => ({ ...prevState, isDrawerOpen: false }))
 
-  handleChangeVisiblePanel = (panel: string) => () => {
-    const { visiblePanels } = this.state
+  const handleChangeVisiblePanel = (panel: keyof State['visiblePanels']) => () => {
+    const { visiblePanels } = state
     const current = visiblePanels[panel]
-    this.setState({ visiblePanels: { ...visiblePanels, [panel]: !current } })
+    setState(prevState => ({ ...prevState, visiblePanels: { ...visiblePanels, [panel]: !current } }))
   }
 
-  handleShowCallStackDescription = () =>
-    this.setState({ showCallStackDescription: true })
+  const handleShowCallStackDescription = () =>
+    setState(preState => ({ ...preState, showCallStackDescription: true }))
 
-  handleHideCallStackDescription = () =>
-    this.setState({ showCallStackDescription: false })
+  const handleHideCallStackDescription = () =>
+    setState(preState => ({ ...preState, showCallStackDescription: false }))
 
-  handleShowEventLoopDescription = () =>
-    this.setState({ showEventLoopDescription: true })
+  const handleShowEventLoopDescription = () =>
+    setState(preState => ({ ...preState, showEventLoopDescription: true }))
 
-  handleHideEventLoopDescription = () =>
-    this.setState({ showEventLoopDescription: false })
+  const handleHideEventLoopDescription = () =>
+    setState(preState => ({ ...preState, showEventLoopDescription: false }))
 
-  handleShowTaskQueueDescription = () =>
-    this.setState({ showTaskQueueDescription: true })
+  const handleShowTaskQueueDescription = () =>
+    setState(preState => ({ ...preState, showTaskQueueDescription: true }))
 
-  handleHideTaskQueueDescription = () =>
-    this.setState({ showTaskQueueDescription: false })
+  const handleHideTaskQueueDescription = () =>
+    setState(preState => ({ ...preState, showTaskQueueDescription: false }))
 
-  handleShowMicrotaskQueueDescription = () =>
-    this.setState({ showMicrotaskQueueDescription: true })
+  const handleShowMicrotaskQueueDescription = () =>
+    setState(preState => ({ ...preState, showMicrotaskQueueDescription: true }))
 
-  handleHideMicrotaskQueueDescription = () =>
-    this.setState({ showMicrotaskQueueDescription: false })
+  const handleHideMicrotaskQueueDescription = () =>
+    setState(preState => ({ ...preState, showMicrotaskQueueDescription: false }))
 
-  handleChangeExample = (evt: { target: { value: string } }) => {
+  const handleChangeExample = (evt: { target: { value: string } }) => {
     const { value } = evt.target
-    this.setState({
+    setState(preState => ({
+      ...preState,
       code: value === 'none' ? '' : value,
       example: evt.target.value,
-    })
-    this.transitionToEditMode()
+    }))
+    transitionToEditMode()
   }
 
-  handleChangeCode = (code: string) => {
-    this.setState({ code })
+  const handleChangeCode = (code: string) => {
+    setState(preState => ({ ...preState, code }))
     localStorage.setItem('code', code)
   }
 
-  handleClickEdit = () => {
-    this.transitionToEditMode()
+  const handleClickEdit = () => {
+    transitionToEditMode()
   }
 
-  handleClickRun = async () => {
-    const { code } = this.state
+  const handleClickRun = async () => {
+    const { code } = state
 
-    this.hideAllSnackbars()
-    this.setState({
+    hideAllSnackbars()
+    setState(preState => ({
+      ...preState,
       mode: 'running',
       frames: [],
       tasks: [],
@@ -135,39 +131,37 @@ class App extends Component {
       markers: [],
       isAutoPlaying: false,
       currentStep: 'none',
-    })
+    }))
 
     try {
-      const events = await fetchEventsForCode(code)
-      this.currEventIdx = 0
-      this.events = events
-      this.setState({ mode: 'visualizing', currentStep: 'evaluateScript' })
+      events = await fetchEventsForCode(code)
+      currEventIdx = 0
+      setState(preState => ({ ...preState, mode: 'visualizing', currentStep: 'evaluateScript' }))
     }
-    catch (e) {
-      this.currEventIdx = 0
-      this.showSnackbar('error', e.message)
-      this.setState({ mode: 'editing', currentStep: 'none' })
+    catch (e: any) {
+      currEventIdx = 0
+      showSnackbar('error', e.message)
+      setState(preState => ({ ...preState, mode: 'editing', currentStep: 'none' }))
       console.error(e)
     }
   }
 
-  handleClickPauseAutoStep = () => {
-    this.setState({ isAutoPlaying: false })
+  const handleClickPauseAutoStep = () => {
+    setState(preState => ({ ...preState, isAutoPlaying: false }))
   }
 
-  handleClickAutoStep = () => {
+  const handleClickAutoStep = () => {
     // TODO: Add isAutoPlaying to state to disable other buttons...
-    this.autoPlayEvents()
+    autoPlayEvents()
   }
 
-  handleClickStep = () => {
-    this.playNextEvent()
+  const handleClickStep = () => {
+    playNextEvent()
   }
 
-  showSnackbar = (variant: 'info' | 'warning' | 'error', msg: string) => {
-    const { enqueueSnackbar } = this.props
+  function showSnackbar(variant: 'info' | 'warning' | 'error', msg: string) {
     const key = uuid()
-    this.snackbarIds.push(key)
+    snackbarIds.push(key)
     enqueueSnackbar(msg, {
       key,
       variant,
@@ -184,16 +178,16 @@ class App extends Component {
     })
   }
 
-  hideAllSnackbars = () => {
-    const { closeSnackbar } = this.props
-    this.snackbarIds.forEach((id) => {
-      closeSnackbar(null, 'Programmatically hiding all snackbars', id)
+  function hideAllSnackbars() {
+    snackbarIds.forEach((id) => {
+      closeSnackbar(id)
     })
   }
 
-  transitionToEditMode = () => {
-    this.hideAllSnackbars()
-    this.setState({
+  function transitionToEditMode() {
+    hideAllSnackbars()
+    setState(preState => ({
+      ...preState,
       mode: 'editing',
       frames: [],
       tasks: [],
@@ -201,73 +195,73 @@ class App extends Component {
       markers: [],
       isAutoPlaying: false,
       currentStep: 'none',
-    })
+    }))
   }
 
-  hasReachedEnd = () => this.currEventIdx >= this.events.length
+  const hasReachedEnd = () => currEventIdx >= events.length
 
-  getCurrentEvent = () => this.events[this.currEventIdx]
+  const getCurrentEvent = () => events[currEventIdx]
 
-  seekToNextPlayableEvent = () => {
-    while (!this.hasReachedEnd() && !isPlayableEvent(this.getCurrentEvent())) {
+  const seekToNextPlayableEvent = () => {
+    while (!hasReachedEnd() && !isPlayableEvent(getCurrentEvent())) {
       /* Process non-playable event: */
       const {
         type,
         payload: { name, message },
-      } = this.getCurrentEvent()
+      } = getCurrentEvent()
       if (type === 'UncaughtError')
-        this.showSnackbar('error', `Uncaught ${name} Exception: ${message}`)
+        showSnackbar('error', `Uncaught ${name} Exception: ${message}`)
 
       if (type === 'EarlyTermination')
-        this.showSnackbar('warning', message)
+        showSnackbar('warning', message)
 
-      this.currEventIdx += 1
+      currEventIdx += 1
     }
   }
 
-  playNextEvent = () => {
-    const { markers } = this.state
+  function playNextEvent(): undefined | void {
+    const { markers } = state
 
     // TODO: Handle trailing non-playable events...
-    this.seekToNextPlayableEvent()
+    seekToNextPlayableEvent()
 
-    if (!this.getCurrentEvent())
+    if (!getCurrentEvent())
       return
 
     const {
       type,
       payload: { id, name, callbackName, start, end, message },
-    } = this.getCurrentEvent()
+    } = getCurrentEvent()
 
     if (type === 'ConsoleLog')
-      this.showSnackbar('info', message)
+      showSnackbar('info', message)
     if (type === 'ConsoleWarn')
-      this.showSnackbar('warning', message)
+      showSnackbar('warning', message)
     if (type === 'ConsoleError')
-      this.showSnackbar('error', message)
+      showSnackbar('error', message)
     if (type === 'ErrorFunction')
-      this.showSnackbar('error', `Uncaught Exception in "${name}": ${message}`)
+      showSnackbar('error', `Uncaught Exception in "${name}": ${message}`)
 
     if (type === 'EnterFunction') {
-      this.setState({ markers: markers.concat({ start, end }) })
-      this.pushCallStackFrame(name)
+      setState(preState => ({ ...preState, markers: markers.concat({ start, end }) }))
+      pushCallStackFrame(name)
     }
     if (type === 'ExitFunction') {
-      this.setState({ markers: markers.slice(0, markers.length - 1) })
-      this.popCallStackFrame()
+      setState(preState => ({ ...preState, markers: markers.slice(0, markers.length - 1) }))
+      popCallStackFrame()
     }
     if (type === 'EnqueueMicrotask')
-      this.enqueueMicrotask(name)
+      enqueueMicrotask(name)
     if (type === 'DequeueMicrotask')
-      this.dequeueMicrotask()
+      dequeueMicrotask()
     if (type === 'InitTimeout')
-      this.enqueueTask(id, callbackName)
+      enqueueTask(id, callbackName)
     if (type === 'BeforeTimeout')
-      this.dequeueTask(id)
+      dequeueTask(id)
 
-    this.currEventIdx += 1
-    this.seekToNextPlayableEvent()
-    const nextEvent = this.getCurrentEvent()
+    currEventIdx += 1
+    seekToNextPlayableEvent()
+    const nextEvent = getCurrentEvent()
 
     const currentStep
       = nextEvent === undefined
@@ -275,197 +269,118 @@ class App extends Component {
         : nextEvent.type === 'Rerender'
           ? 'rerender'
           : nextEvent.type === 'BeforeTimeout'
-            ? 'runTask'
+            ? 'runTasks'
             : nextEvent.type === 'DequeueMicrotask'
               ? 'runMicrotasks'
               : undefined
 
     if (currentStep)
-      this.setState({ currentStep })
+      setState(preState => ({ ...preState, currentStep }))
 
     // Automatically move task functions into the call stack
     if (
       ['DequeueMicrotask', 'BeforeTimeout'].includes(type)
       && nextEvent.type === 'EnterFunction'
     )
-      this.playNextEvent()
+      playNextEvent()
   }
 
-  autoPlayEvents = () => {
-    this.setState({ isAutoPlaying: true }, async () => {
-      while (this.state.mode === 'visualizing' && this.state.isAutoPlaying) {
-        const endReached = this.playNextEvent()
-        if (endReached) {
-          this.setState({ isAutoPlaying: false })
-          break
-        }
-        await pause(500)
+  async function autoPlayEvents() {
+    setState(preState => ({ ...preState, isAutoPlaying: true }))
+
+    while (state.mode === 'visualizing' && state.isAutoPlaying) {
+      const endReached = playNextEvent()
+
+      if (endReached) {
+        setState(preState => ({ ...preState, isAutoPlaying: false }))
+        break
       }
-    })
+
+      await pause(500)
+    }
   }
 
-  // playEventBackwards = () => {
-  //   const { markers } = this.state;
-  //
-  //   // TODO: Handle trailing non-playable events...
-  //   this.seekToNextPlayableEvent();
-  //
-  //   if (!this.getCurrentEvent()) return;
-  //
-  //   const {
-  //     type,
-  //     payload: { id, name, callbackName, start, end, message },
-  //   } = this.getCurrentEvent();
-  //
-  //   if (type === 'ConsoleLog') this.showSnackbar('info', message);
-  //   if (type === 'ConsoleWarn') this.showSnackbar('warning', message);
-  //   if (type === 'ConsoleError') this.showSnackbar('error', message);
-  //   if (type === 'ErrorFunction') {
-  //     this.showSnackbar('error', `Uncaught Exception in "${name}": ${message}`);
-  //   }
-  //   if (type === 'EnterFunction') {
-  //     this.setState({ markers: markers.concat({ start, end }) });
-  //     this.pushCallStackFrame(name);
-  //   }
-  //   if (type === 'ExitFunction') {
-  //     this.setState({ markers: markers.slice(0, markers.length - 1) });
-  //     this.popCallStackFrame();
-  //   }
-  //   if (type === 'EnqueueMicrotask') this.enqueueMicrotask(name);
-  //   if (type === 'DequeueMicrotask') this.dequeueMicrotask();
-  //   if (type === 'InitTimeout') this.enqueueTask(id, callbackName);
-  //   if (type === 'BeforeTimeout') this.dequeueTask(id);
-  //
-  //   this.currEventIdx += 1;
-  //   this.seekToNextPlayableEvent();
-  //   const nextEvent = this.getCurrentEvent();
-  //
-  //   const currentStep =
-  //       nextEvent      === undefined          ? 'rerender'
-  //     : nextEvent.type === 'Rerender'         ? 'rerender'
-  //     : nextEvent.type === 'BeforeTimeout'    ? 'runTask'
-  //     : nextEvent.type === 'DequeueMicrotask' ? 'runMicrotasks'
-  //     : undefined;
-  //
-  //   if (currentStep) this.setState({ currentStep });
-  //
-  //   // Automatically move task functions into the call stack
-  //   if (
-  //     ['DequeueMicrotask', 'BeforeTimeout'].includes(type) &&
-  //     nextEvent.type === 'EnterFunction'
-  //   ) {
-  //     this.playNextEvent();
-  //   }
-  // }
-
-  pushCallStackFrame = (name: string) => {
-    const { frames } = this.state
+  function pushCallStackFrame(name: string) {
+    const { frames } = state
     const newFrames = frames.concat({ id: uuid(), name })
-    this.setState({ frames: newFrames })
+    setState(preState => ({ ...preState, frames: newFrames }))
   }
 
-  popCallStackFrame = () => {
-    const { frames } = this.state
+  function popCallStackFrame() {
+    const { frames } = state
     const newFrames = frames.slice(0, frames.length - 1)
-    this.setState({ frames: newFrames })
+    setState(preState => ({ ...preState, frames: newFrames }))
   }
 
-  enqueueMicrotask = (name: string) => {
-    const { microtasks } = this.state
+  function enqueueMicrotask(name: string) {
+    const { microtasks } = state
     const newMicrotasks = microtasks.concat({ id: uuid(), name })
-    this.setState({ microtasks: newMicrotasks })
+    setState(preState => ({ ...preState, microtasks: newMicrotasks }))
   }
 
-  dequeueMicrotask = () => {
-    const { microtasks } = this.state
+  function dequeueMicrotask() {
+    const { microtasks } = state
     const newMicrotasks = microtasks.slice(1)
-    this.setState({ microtasks: newMicrotasks })
+    setState(preState => ({ ...preState, microtasks: newMicrotasks }))
   }
 
-  enqueueTask = (id: number, name: string) => {
-    const { tasks } = this.state
-    const newTasks = tasks.concat({ id, name })
-    this.setState({ tasks: newTasks })
+  function enqueueTask(id: number, name: string) {
+    const { tasks } = state
+    const newTasks = tasks.concat({ id: id.toString(), name })
+    setState(preState => ({ ...preState, tasks: newTasks }))
   }
 
   // We can't just pop tasks like we can for the Call Stack and Microtask Queue,
   // because if timers have a delay, their execution order isn't necessarily
   // FIFO.
-  dequeueTask = (id: number) => {
-    const { tasks } = this.state
-    const newTasks = tasks.filter(task => task.id !== id)
-    this.setState({ tasks: newTasks })
+  function dequeueTask(id: number) {
+    const { tasks } = state
+    const newTasks = tasks.filter(task => +task.id !== id)
+    setState(preState => ({ ...preState, tasks: newTasks }))
   }
 
-  render() {
-    const {
-      tasks,
-      microtasks,
-      frames,
-      markers,
-      mode,
-      example,
-      code,
-      isAutoPlaying,
-      isDrawerOpen,
-      visiblePanels,
-      currentStep,
-      showCallStackDescription,
-      showEventLoopDescription,
-      showTaskQueueDescription,
-      showMicrotaskQueueDescription,
-    } = this.state
-
-    return (
-      <AppRoot
-        mode={mode}
-        example={example}
-        code={code}
-        tasks={tasks}
-        microtasks={microtasks}
-        frames={frames}
-        markers={markers}
-        visiblePanels={visiblePanels}
-        isAutoPlaying={isAutoPlaying}
-        isDrawerOpen={isDrawerOpen}
-        showCallStackDescription={showCallStackDescription}
-        showEventLoopDescription={showEventLoopDescription}
-        showTaskQueueDescription={showTaskQueueDescription}
-        showMicrotaskQueueDescription={showMicrotaskQueueDescription}
-        hasReachedEnd={this.hasReachedEnd()}
-        currentStep={currentStep}
-        onChangeVisiblePanel={this.handleChangeVisiblePanel}
-        onCloseDrawer={this.handleCloseDrawer}
-        onOpenDrawer={this.handleOpenDrawer}
-        onChangeExample={this.handleChangeExample}
-        onChangeCode={this.handleChangeCode}
-        onClickRun={this.handleClickRun}
-        onClickEdit={this.handleClickEdit}
-        onClickPauseAutoStep={this.handleClickPauseAutoStep}
-        onClickAutoStep={this.handleClickAutoStep}
-        onClickStepBack={() => {}}
-        onClickStep={this.handleClickStep}
-        onShowCallStackDescription={this.handleShowCallStackDescription}
-        onHideCallStackDescription={this.handleHideCallStackDescription}
-        onShowEventLoopDescription={this.handleShowEventLoopDescription}
-        onHideEventLoopDescription={this.handleHideEventLoopDescription}
-        onShowTaskQueueDescription={this.handleShowTaskQueueDescription}
-        onHideTaskQueueDescription={this.handleHideTaskQueueDescription}
-        onShowMicrotaskQueueDescription={
-          this.handleShowMicrotaskQueueDescription
-        }
-        onHideMicrotaskQueueDescription={
-          this.handleHideMicrotaskQueueDescription
-        }
-      />
-    )
-  }
+  return (
+    <AppRoot
+      mode={state.mode}
+      example={state.example}
+      code={state.code}
+      tasks={state.tasks}
+      microtasks={state.microtasks}
+      frames={state.frames}
+      markers={state.markers}
+      visiblePanels={state.visiblePanels}
+      isAutoPlaying={state.isAutoPlaying}
+      isDrawerOpen={state.isDrawerOpen}
+      showCallStackDescription={state.showCallStackDescription}
+      showEventLoopDescription={state.showEventLoopDescription}
+      showTaskQueueDescription={state.showTaskQueueDescription}
+      showMicrotaskQueueDescription={state.showMicrotaskQueueDescription}
+      hasReachedEnd={hasReachedEnd()}
+      currentStep={state.currentStep}
+      onChangeVisiblePanel={handleChangeVisiblePanel}
+      onCloseDrawer={handleCloseDrawer}
+      onOpenDrawer={handleOpenDrawer}
+      onChangeExample={handleChangeExample}
+      onChangeCode={handleChangeCode}
+      onClickRun={handleClickRun}
+      onClickEdit={handleClickEdit}
+      onClickPauseAutoStep={handleClickPauseAutoStep}
+      onClickAutoStep={handleClickAutoStep}
+      onClickStep={handleClickStep}
+      onShowCallStackDescription={handleShowCallStackDescription}
+      onHideCallStackDescription={handleHideCallStackDescription}
+      onShowEventLoopDescription={handleShowEventLoopDescription}
+      onHideEventLoopDescription={handleHideEventLoopDescription}
+      onShowTaskQueueDescription={handleShowTaskQueueDescription}
+      onHideTaskQueueDescription={handleHideTaskQueueDescription}
+      onShowMicrotaskQueueDescription={handleShowMicrotaskQueueDescription}
+      onHideMicrotaskQueueDescription={handleHideMicrotaskQueueDescription}
+    />
+  )
 }
-
-const AppWithSnackbar = withSnackbar(App)
 
 export default () => (
   <SnackbarProvider maxSnack={4}>
-    <AppWithSnackbar />
+    <App />
   </SnackbarProvider>
 )
