@@ -56,9 +56,11 @@ function App() {
     showMicrotaskQueueDescription: false,
   })
 
-  let currEventIdx: number = 0
-  let events: { type: string; payload: any }[] = []
-  const snackbarIds: string[] = []
+  // let currEventIdx: number = 0
+  const [currEventIdx, setCurrEventIdx] = useState<number>(0)
+  // let events: { type: string; payload: any }[] = []
+  const [events, setEvents] = useState<{ type: string; payload: any }[]>([])
+  const [snackbarIds, setSnackbarIds] = useState<string[]>([])
 
   useEffect(() => {
     const search = new URLSearchParams(window.location.search)
@@ -134,12 +136,16 @@ function App() {
     }))
 
     try {
-      events = await fetchEventsForCode(code)
-      currEventIdx = 0
+      const ev = await fetchEventsForCode(code)
+      // currEventIdx = 0
+      setCurrEventIdx(0)
+      // events = ev
+      setEvents(ev)
       setState(preState => ({ ...preState, mode: 'visualizing', currentStep: 'evaluateScript' }))
     }
     catch (e: any) {
-      currEventIdx = 0
+      // currEventIdx = 0
+      setCurrEventIdx(0)
       showSnackbar('error', e.message)
       setState(preState => ({ ...preState, mode: 'editing', currentStep: 'none' }))
       console.error(e)
@@ -161,7 +167,8 @@ function App() {
 
   function showSnackbar(variant: 'info' | 'warning' | 'error', msg: string) {
     const key = uuid()
-    snackbarIds.push(key)
+
+    setSnackbarIds(pre => [...pre, key])
     enqueueSnackbar(msg, {
       key,
       variant,
@@ -198,11 +205,14 @@ function App() {
     }))
   }
 
-  const hasReachedEnd = () => currEventIdx >= events.length
+  const hasReachedEnd = () => {
+    return currEventIdx >= events.length
+  }
 
   const getCurrentEvent = () => events[currEventIdx]
 
-  const seekToNextPlayableEvent = () => {
+  const seekToNextPlayableEvent = async() => {
+
     while (!hasReachedEnd() && !isPlayableEvent(getCurrentEvent())) {
       /* Process non-playable event: */
       const {
@@ -215,7 +225,8 @@ function App() {
       if (type === 'EarlyTermination')
         showSnackbar('warning', message)
 
-      currEventIdx += 1
+      // currEventIdx += 1
+      setCurrEventIdx(currEventIdx+1)
     }
   }
 
@@ -258,8 +269,8 @@ function App() {
       enqueueTask(id, callbackName)
     if (type === 'BeforeTimeout')
       dequeueTask(id)
-
-    currEventIdx += 1
+    // currEventIdx += 1
+    setCurrEventIdx(pre => pre + 1)
     seekToNextPlayableEvent()
     const nextEvent = getCurrentEvent()
 
